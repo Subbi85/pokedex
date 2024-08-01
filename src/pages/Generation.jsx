@@ -21,7 +21,9 @@ import rock from "../assets/icons/rock.svg";
 import steel from "../assets/icons/steel.svg";
 import water from "../assets/icons/water.svg";
 
+// Components
 import PokemonDetails from '../components/PokemonDetails';
+import SearchPokemon from '../components/SearchPokemon';
 
 const Generation = ({ selectedGen }) => {
   const [pokemon, setPokemon] = useState([]);
@@ -64,6 +66,14 @@ const Generation = ({ selectedGen }) => {
           pokemons.map(async (poke) => {
             const detailResponse = await axios.get(poke.url);
             const detailData = detailResponse.data;
+            const speciesResponse = await axios.get(detailData.species.url);
+            const speciesData = speciesResponse.data;
+
+            // Find the English description
+            const descriptionEntry = speciesData.flavor_text_entries.find(
+              (entry) => entry.language.name === 'en'
+            );
+
             return {
               id: detailData.id,
               name: poke.name,
@@ -75,12 +85,13 @@ const Generation = ({ selectedGen }) => {
               })),
               height: detailData.height,
               weight: detailData.weight,
+              description: descriptionEntry ? descriptionEntry.flavor_text : 'Keine Beschreibung gefunden...',
             };
           })
         );
 
         setPokemon(pokemonWithDetails);
-        setSelectedPokemon(pokemonWithDetails[0]); // Set default selected Pokémon
+        setSelectedPokemon(pokemonWithDetails[0]);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -96,29 +107,11 @@ const Generation = ({ selectedGen }) => {
 
   return (
     <div className="flex h-screen">
-      <div className="w-64 bg-gray-800 overflow-y-auto border-r border-gray-700 hover:bg-gray-600 mt-16">
+      <div className="w-64 bg-gray-800 overflow-y-auto border-r border-gray-700 mt-16">
         <ul className="list-none p-0 m-0">
-          {pokemon.map((poke, index) => (
-            <li
-              key={index}
-              className="p-3 cursor-pointer bg-gray-700 border-gray-300 hover:bg-gray-600"
-              onClick={() => setSelectedPokemon(poke)}
-            >
-              <p className='text-3xl'>{poke.name.toUpperCase()}</p>
-              <div className='flex flex-row justify-center items-center'>
-                {poke.types.map((type, index) => (
-                  <div key={index} className="flex items-center">
-                    <img src={typeIcons[type]} alt={type} className="w-8 h-8" />
-                  </div>
-                ))}
-                <img
-                  src={poke.image}
-                  alt={poke.name}
-                  className="w-32 h-32 object-cover"
-                /> 
-              </div>
-            </li>
-          ))}
+          <li key="0">
+            <SearchPokemon pokemon={pokemon} selectedGen={selectedGen} setSelectedPokemon={setSelectedPokemon} typeIcons={typeIcons} />
+          </li>
         </ul>
       </div>
       <div className="flex-1 mt-16">

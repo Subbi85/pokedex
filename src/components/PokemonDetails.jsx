@@ -1,6 +1,15 @@
 import React from 'react'
 
+//Components
+import StatDiagramm from './StatDiagramm'
+
 const PokemonDetails = ({selectedPokemon , typeIcons}) => {
+
+
+  const description = selectedPokemon.description
+  ? selectedPokemon.description.replace(/[\n\f]/g, ' ')
+  : 'Keine Beschreibung vorhanden...';
+
   return (
     <div className="flex flex-row">
       <div className='flex flex-col justify-center items-center'>
@@ -16,29 +25,29 @@ const PokemonDetails = ({selectedPokemon , typeIcons}) => {
         <p>Größe: {selectedPokemon.height / 10} m</p>
         <p>Gewicht: {selectedPokemon.weight / 10} kg</p>
         <ul className="list-none p-0 mt-4">
-          {selectedPokemon.stats.map((stat, statIndex) => (
-            <li key={statIndex} className="mt-1">
-              {stat.name.charAt(0).toUpperCase() + stat.name.slice(1)}: {stat.base}
-            </li>
-          ))}
+          <StatDiagramm selectedPokemon={selectedPokemon}/>
         </ul>
 
-      </div>
-      <div className='flex flex-col'>
-        <span className='text-6xl'>#{selectedPokemon.id}</span>
-        <img
-          src={selectedPokemon.image}
-          alt={selectedPokemon.name}
-          className="w-32 h-32 object-cover my-4"
-        />
+        <p className='text-2xl'>{description}</p>
+
 
       </div>
+        <div className='flex flex-col'>
+          <span className='text-6xl'>#{selectedPokemon.id}</span>
+          <img
+            src={selectedPokemon.image}
+            alt={selectedPokemon.name}
+            className="w-32 h-32 object-cover my-4"
+          />
+        </div>
+      
 
-    <div>
+
+
 
       </div>
 
-  </div>
+      
   )
 }
 

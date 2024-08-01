@@ -10,6 +10,11 @@ const OffCanvasWithNavbar = ( {selectedGen, setSelectedGen, generations}) => {
     console.log(isOpen);
   };
 
+  function handleNav(gen){
+    setSelectedGen(gen)
+    setIsOpen(!isOpen)
+  }
+
   return (
     <div>
       <nav className="fixed top-0 left-0 w-full bg-gray-800 shadow-md flex justify-between items-center p-4 z-50">
@@ -17,13 +22,6 @@ const OffCanvasWithNavbar = ( {selectedGen, setSelectedGen, generations}) => {
           <TbPokeball size={30} className="text-white cursor-pointer" />
           <span className="text-xl font-bold text-white ml-2">Pokédex</span>
         </a>
-        <div className="flex-grow mx-4">
-          <input 
-            type="text" 
-            className="w-1/2 p-2 rounded-md bg-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder={`${selectedGen.title}`}
-          />
-        </div>
         <button 
           className="flex items-center px-4 py-2 rounded-md bg-gray-700 text-white hover:bg-gray-600 focus:outline-none"
           onClick={toggleOffCanvas}
@@ -45,19 +43,15 @@ const OffCanvasWithNavbar = ( {selectedGen, setSelectedGen, generations}) => {
           <i className="fa-solid fa-xmark fa-2x"></i>
         </button>
 
-        <div className="flex justify-center py-4">
-          <h1 className="text-center text-white text-2xl">
-            <strong>.</strong>
-          </h1>
+        <div className="flex justify-center py-4 mt-12">
         </div>
-
 
         <div className="p-4">
           <div className="flex flex-wrap justify-center overflow-y-scroll">
 
             {generations.map((gen)=>(
               <div href="/generation" id={gen.name} className="bg-gray-700 text-white p-4 m-2 rounded-lg w-[350px] h-[220px] hover:bg-red-500 flex justify-center items-center"
-                  onClick={() => setSelectedGen(gen)}>
+                  onClick={() => handleNav(gen)}>
                     {gen.title}
                   <img src={gen.img_path} alt="" title={gen.title} className='w-1/2'/>
               </div>
