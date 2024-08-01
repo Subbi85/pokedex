@@ -65,7 +65,7 @@ const SearchPokemon = ({ pokemon, selectedGen, setSelectedPokemon, typeIcons }) 
             className="p-3 cursor-pointer bg-gray-700 border-gray-300"
             onClick={() => setSelectedPokemon(poke)}
           >
-            <p className='text-3xl'>{poke.name.toUpperCase()}</p>
+            <p className='text-3xl'>{poke.germanName.toUpperCase()}</p>
             <div className='flex flex-row justify-center items-center'>
               {poke.types.map((type, index) => (
                 <div key={index} className="flex items-center">

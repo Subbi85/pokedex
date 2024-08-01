@@ -69,14 +69,50 @@ const Generation = ({ selectedGen }) => {
             const speciesResponse = await axios.get(detailData.species.url);
             const speciesData = speciesResponse.data;
 
-            // Find the English description
+            const evolutionChainResponse = await axios.get(speciesData.evolution_chain.url);
+            const evolutionChainData = evolutionChainResponse.data;
+
+            const getEvolutionChain = async (chain) => {
+              const chainArray = [];
+              let current = chain;
+
+              while (current) {
+                const pokemonName = current.species.name;
+                const pokemonDetailResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+                const pokemonDetailData = pokemonDetailResponse.data;
+
+                const germanNameEntry = speciesData.names.find(
+                  (entry) => entry.language.name === 'de'
+                );
+                chainArray.push({
+                  species_name: pokemonName,
+                  german_name: germanNameEntry ? germanNameEntry.name : pokemonName,
+                  min_level: current.evolution_details[0] ? current.evolution_details[0].min_level : null,
+                  trigger_name: current.evolution_details[0] ? current.evolution_details[0].trigger.name : null,
+                  image: pokemonDetailData.sprites.other['official-artwork'].front_default,
+                });
+
+                current = current.evolves_to[0];
+              }
+
+              return chainArray;
+            };
+
+            const evolutionChain = await getEvolutionChain(evolutionChainData.chain);
+
+            //German Terms
+            const germanNameEntry = speciesData.names.find(
+              (entry) => entry.language.name === 'de'
+            );
+
             const descriptionEntry = speciesData.flavor_text_entries.find(
-              (entry) => entry.language.name === 'en'
+              (entry) => entry.language.name === 'de'
             );
 
             return {
               id: detailData.id,
               name: poke.name,
+              germanName: germanNameEntry ? germanNameEntry.name : "",
               image: detailData.sprites.other['official-artwork'].front_default,
               types: detailData.types.map((typeInfo) => typeInfo.type.name),
               stats: detailData.stats.map((statInfo) => ({
@@ -86,6 +122,7 @@ const Generation = ({ selectedGen }) => {
               height: detailData.height,
               weight: detailData.weight,
               description: descriptionEntry ? descriptionEntry.flavor_text : 'Keine Beschreibung gefunden...',
+              evolutionChain,
             };
           })
         );
@@ -102,7 +139,7 @@ const Generation = ({ selectedGen }) => {
     fetchPokemon();
   }, [selectedGen]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Daten werden abgerufen....</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
@@ -116,7 +153,7 @@ const Generation = ({ selectedGen }) => {
       </div>
       <div className="flex-1 mt-16">
         {selectedPokemon && (
-          <PokemonDetails selectedPokemon={selectedPokemon} typeIcons={typeIcons} />
+          <PokemonDetails selectedPokemon={selectedPokemon} typeIcons={typeIcons} setSelectedPokemon={setSelectedPokemon} />
         )}
       </div>
     </div>
