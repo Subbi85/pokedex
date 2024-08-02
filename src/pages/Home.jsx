@@ -3,7 +3,7 @@ import React from 'react'
 //Images
 import pikachu from "../assets/img/pikachu.png"
 
-const Home = () => {
+const Home = ({favoritePokemon}) => {
   return (
     <div className="flex flex-col flex-wrap-reverse md:grid md:grid-cols-2 w-100">
         <div className="flex justify-center items-end">
@@ -19,7 +19,9 @@ const Home = () => {
             </div>
         </div>
         <div className="flex">
-            <img src={pikachu} alt="" />
+            {favoritePokemon &&
+              <img src={favoritePokemon.image} alt="" />
+            }
         </div>
     </div>
   )

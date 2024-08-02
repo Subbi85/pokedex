@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState , useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 
@@ -101,13 +101,25 @@ const generations = [
 function App() {
 
   const [selectedGen, setSelectedGen]=useState(generations[0]);
+  const [favoritePokemon, setFavoritePokemon]=useState(null)
+
+  useEffect(() => {
+    // Retrieve favorite Pokémon from localStorage when App mounts
+    const savedFavorite = localStorage.getItem('favoritePokemon');
+    if (savedFavorite) {
+      setFavoritePokemon(JSON.parse(savedFavorite));
+    }
+  }, []);
+
   return (
     <>
       <BrowserRouter>
-        <Navbar setSelectedGen={setSelectedGen} selectedGen={selectedGen} generations={generations}/>
+        <Navbar setSelectedGen={setSelectedGen} generations={generations}/>
         <Routes>
-          <Route path="/" exact element={<Home />}/>
-          <Route path="/generation" element={<Generation selectedGen={selectedGen} />}/>
+          <Route path="/" exact element={<Home favoritePokemon={favoritePokemon}/>}/>
+          <Route path="/generation" element={<Generation selectedGen={selectedGen} favoritePokemon={favoritePokemon}
+                  setFavoritePokemnon={setFavoritePokemon}
+                />}/>
           <Route path="/kampf" element={<Kampf />} /> 
         </Routes>
       </BrowserRouter>

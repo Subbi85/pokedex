@@ -25,7 +25,7 @@ import water from "../assets/icons/water.svg";
 import PokemonDetails from '../components/PokemonDetails';
 import SearchPokemon from '../components/SearchPokemon';
 
-const Generation = ({ selectedGen }) => {
+const Generation = ({ selectedGen, favoritePokemon, setFavoritePokemnon }) => {
   const [pokemon, setPokemon] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -147,7 +147,10 @@ const Generation = ({ selectedGen }) => {
       <div className="w-64 bg-gray-800 overflow-y-auto border-r border-gray-700 mt-16">
         <ul className="list-none p-0 m-0">
           <li key="0">
-            <SearchPokemon pokemon={pokemon} selectedGen={selectedGen} setSelectedPokemon={setSelectedPokemon} typeIcons={typeIcons} />
+            <SearchPokemon pokemon={pokemon} selectedGen={selectedGen} 
+                          setSelectedPokemon={setSelectedPokemon} typeIcons={typeIcons}
+                          favoritePokemon={favoritePokemon} setFavoritePokemon={setFavoritePokemnon}
+                          />
           </li>
         </ul>
       </div>

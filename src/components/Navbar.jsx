@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TbPokeball } from 'react-icons/tb';
 import { CiMenuBurger } from 'react-icons/ci';
 
-const OffCanvasWithNavbar = ( {selectedGen, setSelectedGen, generations}) => {
+const OffCanvasWithNavbar = ( {setSelectedGen, generations}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOffCanvas = () => {

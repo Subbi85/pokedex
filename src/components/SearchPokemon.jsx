@@ -1,10 +1,30 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { FaRegArrowAltCircleDown } from "react-icons/fa";
+import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
 
 const SearchPokemon = ({ pokemon, selectedGen, setSelectedPokemon, typeIcons }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [isExtended, setIsExtended] = useState(false);
+  const [favoritePokemon, setFavoritePokemon] = useState(null);
+
+  useEffect(() => {
+    // Retrieve favorite Pokémon from localStorage when component mounts
+    const savedFavorite = localStorage.getItem('favoritePokemon');
+    if (savedFavorite) {
+      setFavoritePokemon(JSON.parse(savedFavorite));
+    }
+  }, []);
+
+  // Update localStorage when favoritePokemon changes
+  useEffect(() => {
+    if (favoritePokemon) {
+      localStorage.setItem('favoritePokemon', JSON.stringify(favoritePokemon));
+    } else {
+      localStorage.removeItem('favoritePokemon');
+    }
+  }, [favoritePokemon]);
 
   const handleSearchChange = useCallback((event) => {
     setSearchTerm(event.target.value);
@@ -27,10 +47,14 @@ const SearchPokemon = ({ pokemon, selectedGen, setSelectedPokemon, typeIcons }) 
     (selectedTypes.length === 0 || selectedTypes.some(type => poke.types.includes(type)))
   );
 
+  const handleFavPokemon = useCallback((poke) => {
+    setFavoritePokemon(prev => (prev === poke ? null : poke));
+  }, []);
+
   return (
     <>
       <div>
-        <h3>{selectedGen.title}</h3>
+        <h1>{selectedGen.title}</h1>
         <p>Pokemon von #{selectedGen.from} bis #{selectedGen.to}</p>
         <form action="">
           <input 
@@ -76,7 +100,12 @@ const SearchPokemon = ({ pokemon, selectedGen, setSelectedPokemon, typeIcons }) 
                 src={poke.image}
                 alt={poke.name}
                 className="w-32 h-32 object-cover"
-              /> 
+              />
+              {favoritePokemon?.name === poke.name ? (
+                <FaStar className='text-yellow-500' />
+              ) : (
+                <CiStar className='hover:text-yellow-500' onClick={() => handleFavPokemon(poke)} />
+              )}
             </div>
           </li>
         ))}
