@@ -5,6 +5,7 @@ import './App.css'
 //Pages
 import Home from './pages/Home'
 import Generation from './pages/Generation'
+import Kampf from "./pages/Kampf"
 
 //Components
 import Navbar from './components/Navbar'
@@ -107,6 +108,7 @@ function App() {
         <Routes>
           <Route path="/" exact element={<Home />}/>
           <Route path="/generation" element={<Generation selectedGen={selectedGen} />}/>
+          <Route path="/kampf" element={<Kampf />} /> 
         </Routes>
       </BrowserRouter>
     </>

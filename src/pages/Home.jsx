@@ -5,7 +5,7 @@ import pikachu from "../assets/img/pikachu.png"
 
 const Home = () => {
   return (
-    <div className="grid grid-cols-2 w-100">
+    <div className="flex flex-col flex-wrap-reverse md:grid md:grid-cols-2 w-100">
         <div className="flex justify-center items-end">
             <div className="flex flex-col justify-center items-center">
               <h1 className='font-bold m-4'> Willkommen beim Pokedex</h1>

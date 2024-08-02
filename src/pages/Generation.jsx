@@ -153,7 +153,7 @@ const Generation = ({ selectedGen }) => {
       </div>
       <div className="flex-1 mt-16">
         {selectedPokemon && (
-          <PokemonDetails selectedPokemon={selectedPokemon} typeIcons={typeIcons} setSelectedPokemon={setSelectedPokemon} />
+          <PokemonDetails selectedPokemon={selectedPokemon} typeIcons={typeIcons} />
         )}
       </div>
     </div>

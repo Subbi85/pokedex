@@ -23,7 +23,7 @@ const SearchPokemon = ({ pokemon, selectedGen, setSelectedPokemon, typeIcons }) 
   }, []);
 
   const filteredPokemon = pokemon.filter(poke => 
-    poke.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    poke.germanName.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (selectedTypes.length === 0 || selectedTypes.some(type => poke.types.includes(type)))
   );
 
